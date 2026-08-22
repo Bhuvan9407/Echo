@@ -1,0 +1,18 @@
+{
+  "name": "Echo-landing-page",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Premium modern landing page for Echo by Null Pointers.",
+  "scripts": {
+    "start": "python -m http.server 4173",
+    "check": "node --check assets/js/script.js"
+  },
+  "keywords": [
+    "Echo",
+    "landing-page",
+    "static-site",
+    "hackathon"
+  ],
+  "author": "Null Pointers",
+  "license": "UNLICENSED"
+}
