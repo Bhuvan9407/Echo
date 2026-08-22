@@ -1,4 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  alias: { type: String, required: true },
+  // ADD THIS NEW FIELD:
+  assessment: { type: [String], default: [] },
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('User', userSchema);
 const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(

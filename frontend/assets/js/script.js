@@ -133,48 +133,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- REGISTER LOGIC ---
+  // Handle Registration
   if (registerForm) {
     registerForm.addEventListener("submit", async (e) => {
-      e.preventDefault(); // Stop page from refreshing
-
-      // Grab values from the HTML inputs
-      const name = document.getElementById("reg-name").value;
+      e.preventDefault();
       const email = document.getElementById("reg-email").value;
       const alias = document.getElementById("reg-alias").value;
       const password = document.getElementById("reg-password").value;
 
-      authMessage.textContent = "Creating account...";
-      authMessage.style.color = "white";
+      // Collect all 15 answers
+      const assessmentAnswers = [];
+      for (let i = 1; i <= 15; i++) {
+        const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selectedOption) {
+          assessmentAnswers.push(selectedOption.value);
+        }
+      }
 
       try {
         const response = await fetch(`${API_BASE_URL}/auth/register`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email, alias, password })
+          headers: { "Content-Type": "application/json" },
+          // Include the assessment array in the request body
+          body: JSON.stringify({ email, alias, password, assessment: assessmentAnswers })
         });
 
         const data = await response.json();
-
         if (data.success) {
-          authMessage.textContent = "Account created successfully! Redirecting...";
-          authMessage.style.color = "#4ade80"; // Success green
-          
-          // Save the JWT token
-          localStorage.setItem("echo_token", data.data.token);
+          alert("Registration successful! You can now log in.");
           registerForm.reset();
-          
-          // Auto-redirect to the chat interface
-          setTimeout(() => window.location.href = "chat.html", 1500);
+          registerModal.style.display = "none";
         } else {
-          authMessage.textContent = "Error: " + data.message;
-          authMessage.style.color = "#f87171"; // Error red
+          alert(data.message || "Registration failed.");
         }
       } catch (error) {
-        console.error("Fetch error:", error);
-        authMessage.textContent = "Server is not responding. Is the backend running?";
-        authMessage.style.color = "#f87171";
+        console.error("Registration Error:", error);
+        alert("An error occurred. Please try again later.");
       }
     });
   }

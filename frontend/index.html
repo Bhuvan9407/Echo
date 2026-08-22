@@ -375,13 +375,159 @@
           </div>
 
           <!-- Registration Form -->
-          <form id="register-form" style="display: flex; flex-direction: column; gap: 15px;">
-            <input type="text" id="reg-name" placeholder="Your Real Name (Kept Private)" required style="padding: 12px; border-radius: 8px;">
-            <input type="email" id="reg-email" placeholder="Your Email (Kept Private)" required style="padding: 12px; border-radius: 8px;">
-            <input type="text" id="reg-alias" placeholder="Choose an Alias (Public)" required style="padding: 12px; border-radius: 8px;">
-            <input type="password" id="reg-password" placeholder="Password (Min 6 chars)" required style="padding: 12px; border-radius: 8px;">
-            <button type="submit" class="button primary">Create Anonymous Account →</button>
-          </form>
+          <form id="register-form">
+  <input type="email" id="reg-email" placeholder="Email Address" required>
+  <input type="text" id="reg-alias" placeholder="Anonymous Alias" required>
+  <input type="password" id="reg-password" placeholder="Password" required>
+  
+  <div class="questionnaire-scroll" style="max-height: 300px; overflow-y: auto; padding: 15px; margin: 15px 0; background: rgba(255,255,255,0.5); border-radius: 12px; border: 1px solid var(--line); text-align: left;">
+    <h4 style="margin-top: 0; color: var(--primary-dark); font-weight: 800; font-size: 0.95rem;">Quick Mood Assessment (Required)</h4>
+    
+    <style>
+      .q-block { margin-bottom: 20px; }
+      .q-block p { font-weight: 800; font-size: 0.85rem; color: var(--ink); margin-bottom: 8px; line-height: 1.4; }
+      .q-block label { display: block; background: var(--soft-green); color: var(--primary-dark); padding: 8px 12px; margin-bottom: 5px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+      .q-block label:hover { background: var(--primary); color: #fff; }
+    </style>
+
+    <!-- Q1 -->
+    <div class="q-block">
+      <p>1. If you had to describe your mood this week, what would you say?</p>
+      <label><input type="radio" name="q1" value="A" required> A) I've been feeling pretty happy</label>
+      <label><input type="radio" name="q1" value="B"> B) I've had good and bad moments</label>
+      <label><input type="radio" name="q1" value="C"> C) I've been feeling low</label>
+      <label><input type="radio" name="q1" value="D"> D) I've been feeling really down</label>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-block">
+      <p>2. What's your mind been like lately?</p>
+      <label><input type="radio" name="q2" value="A" required> A) Pretty calm</label>
+      <label><input type="radio" name="q2" value="B"> B) A little busy</label>
+      <label><input type="radio" name="q2" value="C"> C) Constantly thinking about things</label>
+      <label><input type="radio" name="q2" value="D"> D) I can't seem to switch my mind off</label>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-block">
+      <p>3. How easily can you concentrate on studies/work?</p>
+      <label><input type="radio" name="q3" value="A" required> A) I can focus normally</label>
+      <label><input type="radio" name="q3" value="B"> B) I get distracted sometimes</label>
+      <label><input type="radio" name="q3" value="C"> C) I struggle to stay focused</label>
+      <label><input type="radio" name="q3" value="D"> D) It's been really difficult</label>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-block">
+      <p>4. How have you been sleeping lately?</p>
+      <label><input type="radio" name="q4" value="A" required> A) Sleeping well and waking refreshed</label>
+      <label><input type="radio" name="q4" value="B"> B) Sleeping okay, but still feeling tired</label>
+      <label><input type="radio" name="q4" value="C"> C) My sleep has been irregular</label>
+      <label><input type="radio" name="q4" value="D"> D) I'm having a lot of trouble sleeping</label>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-block">
+      <p>5. How's your energy during the day?</p>
+      <label><input type="radio" name="q5" value="A" required> A) I feel energetic</label>
+      <label><input type="radio" name="q5" value="B"> B) I'm a little tired</label>
+      <label><input type="radio" name="q5" value="C"> C) I'm tired most of the time</label>
+      <label><input type="radio" name="q5" value="D"> D) I feel drained even after resting</label>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-block">
+      <p>6. When something stressful happens, how do you usually react?</p>
+      <label><input type="radio" name="q6" value="A" required> A) I handle it and move forward</label>
+      <label><input type="radio" name="q6" value="B"> B) I get stressed but eventually manage</label>
+      <label><input type="radio" name="q6" value="C"> C) I keep thinking about it</label>
+      <label><input type="radio" name="q6" value="D"> D) It completely overwhelms me</label>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-block">
+      <p>7. Are you still enjoying the things you normally love?</p>
+      <label><input type="radio" name="q7" value="A" required> A) Yes, definitely!</label>
+      <label><input type="radio" name="q7" value="B"> B) Mostly, just a little less</label>
+      <label><input type="radio" name="q7" value="C"> C) Not as much anymore</label>
+      <label><input type="radio" name="q7" value="D"> D) I've lost interest in most things</label>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-block">
+      <p>8. How often do you feel like you're carrying too much?</p>
+      <label><input type="radio" name="q8" value="A" required> A) Almost never</label>
+      <label><input type="radio" name="q8" value="B"> B) Sometimes</label>
+      <label><input type="radio" name="q8" value="C"> C) Quite often</label>
+      <label><input type="radio" name="q8" value="D"> D) Almost every day</label>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-block">
+      <p>9. When you're having a difficult day, what do you usually do?</p>
+      <label><input type="radio" name="q9" value="A" required> A) Talk to someone I trust</label>
+      <label><input type="radio" name="q9" value="B"> B) Do something that helps me relax</label>
+      <label><input type="radio" name="q9" value="C"> C) Keep myself busy and avoid thinking</label>
+      <label><input type="radio" name="q9" value="D"> D) Withdraw and deal with it alone</label>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-block">
+      <p>10. How connected do you feel to the people around you?</p>
+      <label><input type="radio" name="q10" value="A" required> A) I feel very connected</label>
+      <label><input type="radio" name="q10" value="B"> B) I have a few people I'm close to</label>
+      <label><input type="radio" name="q10" value="C"> C) I've been feeling distant lately</label>
+      <label><input type="radio" name="q10" value="D"> D) I feel quite alone</label>
+    </div>
+
+    <!-- Q11 -->
+    <div class="q-block">
+      <p>11. How have you been feeling about yourself?</p>
+      <label><input type="radio" name="q11" value="A" required> A) I feel good about myself</label>
+      <label><input type="radio" name="q11" value="B"> B) I'm okay with myself</label>
+      <label><input type="radio" name="q11" value="C"> C) I've been doubting myself a lot</label>
+      <label><input type="radio" name="q11" value="D"> D) I've been feeling very negative</label>
+    </div>
+
+    <!-- Q12 -->
+    <div class="q-block">
+      <p>12. Have your emotions been affecting your daily life?</p>
+      <label><input type="radio" name="q12" value="A" required> A) Not really</label>
+      <label><input type="radio" name="q12" value="B"> B) A little</label>
+      <label><input type="radio" name="q12" value="C"> C) Quite a bit</label>
+      <label><input type="radio" name="q12" value="D"> D) Making everyday things difficult</label>
+    </div>
+
+    <!-- Q13 -->
+    <div class="q-block">
+      <p>13. When was the last time you felt genuinely relaxed?</p>
+      <label><input type="radio" name="q13" value="A" required> A) Today</label>
+      <label><input type="radio" name="q13" value="B"> B) Within the last few days</label>
+      <label><input type="radio" name="q13" value="C"> C) I can't remember</label>
+      <label><input type="radio" name="q13" value="D"> D) It's been a long time</label>
+    </div>
+
+    <!-- Q14 -->
+    <div class="q-block">
+      <p>14. If you could change one thing, what would it be?</p>
+      <label><input type="radio" name="q14" value="A" required> A) Nothing, I'm doing okay</label>
+      <label><input type="radio" name="q14" value="B"> B) I'd like to feel less stressed</label>
+      <label><input type="radio" name="q14" value="C"> C) I'd like to feel happier/motivated</label>
+      <label><input type="radio" name="q14" value="D"> D) I'd like to feel like myself again</label>
+    </div>
+
+    <!-- Q15 -->
+    <div class="q-block">
+      <p>15. Last one — if asked, "Do you need help right now?", what would you say?</p>
+      <label><input type="radio" name="q15" value="A" required> A) "No, I'm genuinely okay."</label>
+      <label><input type="radio" name="q15" value="B"> B) "Maybe, I could use someone to talk to."</label>
+      <label><input type="radio" name="q15" value="C"> C) "Yes, I've been struggling lately."</label>
+      <label><input type="radio" name="q15" value="D"> D) "Yes, I really need support."</label>
+    </div>
+  </div>
+
+  <button type="submit" class="button primary" style="width: 100%;">Complete Registration</button>
+</form>
 
           <!-- Login Form (Hidden by default) -->
           <form id="login-form" style="display: none; flex-direction: column; gap: 15px;">

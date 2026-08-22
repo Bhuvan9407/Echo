@@ -12,7 +12,7 @@ const generateToken = (id) => {
 // @route   POST /api/auth/register
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, password, alias, preferredLanguage, selectedConcerns } = req.body;
+    const { name, email, password, alias, preferredLanguage, selectedConcerns, assessment } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ email });
@@ -20,7 +20,7 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ success: false, message: "User already exists" });
     }
 
-    // Create user
+    // Create user with assessment responses
     const user = await User.create({
       name,
       email,
@@ -28,6 +28,7 @@ exports.registerUser = async (req, res) => {
       alias: alias || "Anonymous",
       preferredLanguage: preferredLanguage || "en",
       selectedConcerns: selectedConcerns || [],
+      assessment: assessment || [], // <-- Added assessment field here
     });
 
     if (user) {
