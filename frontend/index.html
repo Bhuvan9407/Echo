@@ -24,7 +24,7 @@
       <a href="#safety">Safety</a>
       <a href="#privacy">Privacy</a>
     </nav>
-    <a class="nav-cta" href="register.html">Start Talking</a>
+    <a class="nav-cta" href="#cta">Start Talking</a>
   </header>
 
   <main id="top">
@@ -37,7 +37,7 @@
         <h1>Talk freely.<br>Stay anonymous.</h1>
         <p>A safe space to talk to people, talk to AI, and find someone who understands in the language you naturally speak.</p>
         <div class="hero-actions">
-          <a class="button primary" href="register.html">Start Talking <span aria-hidden="true">→</span></a>
+          <a class="button primary" href="#cta">Start Talking <span aria-hidden="true">→</span></a>
           <a class="button secondary" href="#features">Explore Echo</a>
         </div>
       </div>
@@ -135,11 +135,11 @@
         <article class="product-card reveal">
           <div class="product-top">
             <span class="product-icon person"></span>
-            <a href="register.html" aria-label="Chat anonymously">↗</a>
+            <a href="#cta" aria-label="Chat anonymously">↗</a>
           </div>
           <h3>Talk to a Person</h3>
           <p>Anonymous peer-to-peer conversation with someone who understands what you are going through.</p>
-          <a href="register.html"><button type="button">Chat anonymously →</button></a>
+          <button type="button" data-scroll-to="#connectwheel">Chat anonymously →</button>
         </article>
         <article class="product-card featured reveal">
           <div class="mini-chat">
@@ -148,7 +148,7 @@
           </div>
           <h3>Talk to Echo AI</h3>
           <p>Need someone right now? Talk to your AI companion whenever you want.</p>
-          <a href="register.html"><button type="button">Talk to AI →</button></a>
+          <button type="button" data-scroll-to="#ai">Talk to AI →</button>
         </article>
         <article class="product-card reveal">
           <div class="match-stack">
@@ -156,8 +156,206 @@
           </div>
           <h3>Find Your Match</h3>
           <p>Let Echo understand your concerns and connect you with relevant people.</p>
-          <a href="register.html"><button type="button">Find a match →</button></a>
+          <button type="button" data-scroll-to="#connectwheel">Find a match →</button>
         </article>
+      </div>
+    </section>
+
+    <section class="translation section-pad" id="translation">
+      <div class="section-intro reveal">
+        <span class="section-kicker">Natural language translation</span>
+        <h2>You do not have to speak perfectly.</h2>
+        <p>Echo understands how people actually talk, including Hinglish, code-mixed sentences, slang, and casual language.</p>
+      </div>
+      <div class="translation-demo reveal">
+        <div class="language-card">
+          <span>You · India</span>
+          <p>mujhe stress ho raha hai yaar, kal exam bhi hai</p>
+          <small>Original message preserved</small>
+        </div>
+        <div class="meaning-core">
+          <div class="meaning-pulse"></div>
+          <strong>Echo AI</strong>
+          <span>Understanding</span>
+          <p>Academic stress + exam anxiety</p>
+        </div>
+        <div class="language-card">
+          <span>Anonymous Friend · UK</span>
+          <p>I’m really stressed about the exam tomorrow.</p>
+          <small>Meaning-first translation</small>
+        </div>
+      </div>
+      <div class="translation-tabs reveal" data-translation-tabs>
+        <button type="button" class="active">Hinglish → English</button>
+        <button type="button">Hindi → English</button>
+        <button type="button">English → Telugu</button>
+        <button type="button">Tamil → English</button>
+      </div>
+      <div class="preserve-panel reveal" data-translation-panel>
+        <div>
+          <span>Original message</span>
+          <strong>mujhe stress ho raha hai yaar</strong>
+        </div>
+        <div>
+          <span>Translation</span>
+          <strong>I’m feeling stressed right now.</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="ai-section section-pad" id="ai">
+      <div class="section-intro reveal">
+        <span class="section-kicker">Echo AI</span>
+        <h2>An AI that remembers the conversation, not your identity.</h2>
+        <p>Your Echo AI companion can use conversation history and context to make future conversations and support more relevant.</p>
+      </div>
+      <div class="ai-console reveal">
+        <aside>
+          <span>Your conversations</span>
+          <button type="button" class="active" data-ai-topic="exam">Exam stress</button>
+          <button type="button" data-ai-topic="college">College pressure</button>
+          <button type="button" data-ai-topic="sleep">Sleep problems</button>
+          <button type="button" data-ai-topic="anxiety">Anxiety</button>
+        </aside>
+        <div class="ai-chat">
+          <div class="ai-chat-top">
+            <span class="avatar ai">AI</span>
+            <div>
+              <strong>Echo AI</strong>
+              <small>Context-aware companion</small>
+            </div>
+          </div>
+          <p class="typing-text" data-typing>“You mentioned feeling overwhelmed about college recently. Want to talk about what has been on your mind today?”</p>
+          <div class="ai-actions">
+            <button type="button" data-scroll-to="#cta">Talk now</button>
+            <button type="button" data-ai-random>Use my context</button>
+          </div>
+        </div>
+      </div>
+      <div class="three-points">
+        <div class="reveal"><strong>Context-aware</strong><span>Understands previous conversations.</span></div>
+        <div class="reveal"><strong>Available anytime</strong><span>Talk whenever you need.</span></div>
+        <div class="reveal"><strong>Privacy-aware</strong><span>Identity remains separate from conversation context.</span></div>
+      </div>
+    </section>
+
+    <section class="connect section-pad" id="connectwheel">
+      <div class="section-intro reveal">
+        <span class="section-kicker">ConnectWheel</span>
+        <h2>Find someone who gets it.</h2>
+        <p>Your conversations help Echo understand your concerns and find relevant connections.</p>
+      </div>
+      <div class="connect-layout">
+        <div class="wheel-wrap reveal" aria-label="ConnectWheel matching visualization">
+          <div class="wheel">
+            <span class="topic t1">Exam Stress</span>
+            <span class="topic t2">Anxiety</span>
+            <span class="topic t3">Loneliness</span>
+            <span class="topic t4">Addiction</span>
+            <span class="topic t5">Relationship Stress</span>
+            <span class="topic t6">Family Pressure</span>
+            <span class="topic t7">Burnout</span>
+            <span class="topic t8">Self Doubt</span>
+            <span class="orbit-avatar oa1">A</span>
+            <span class="orbit-avatar oa2">B</span>
+            <span class="orbit-avatar oa3">C</span>
+            <div class="wheel-core">
+              <span>◎</span>
+              <strong>CONNECTWHEEL</strong>
+            </div>
+          </div>
+        </div>
+        <div class="match-flow reveal">
+          <div class="wheel-detail-grid" aria-label="ConnectWheel matching signals">
+            <div><span>Concern</span><strong>Exam pressure</strong></div>
+            <div><span>Experience</span><strong>Been through it</strong></div>
+            <div><span>Language</span><strong>Hinglish comfort</strong></div>
+            <div><span>Safety fit</span><strong>Supportive tone</strong></div>
+          </div>
+          <div class="match-box">
+            <span>You</span>
+            <strong>Academic Stress</strong>
+            <small>Exam Anxiety</small>
+          </div>
+          <div class="flow-line">Echo Matching</div>
+          <div class="connection-list">
+            <article><strong>Anonymous A</strong><span>Been through exam stress</span></article>
+            <article><strong>Anonymous B</strong><span>Currently dealing with similar pressure</span></article>
+            <article><strong>Anonymous C</strong><span>Recently overcame it</span></article>
+          </div>
+          <div class="concern-cloud">
+            <span>panic before exams</span>
+            <span>family expectations</span>
+            <span>sleep spiral</span>
+            <span>language comfort</span>
+            <span>mentor-style peer</span>
+          </div>
+          <p>Someone struggling. Someone who has been through it. One meaningful conversation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="safety section-pad" id="safety">
+      <div class="section-intro reveal">
+        <span class="section-kicker">Safety layer</span>
+        <h2>When a conversation becomes serious, Echo notices.</h2>
+        <p>Potentially concerning messages can trigger supportive responses and verified resources. Support, not diagnosis.</p>
+      </div>
+      <div class="safety-demo reveal">
+        <div class="danger-chat">
+          <span>You</span>
+          <p>“I do not think I can handle this anymore.”</p>
+        </div>
+        <div class="support-card">
+          <span class="warning-mark">!</span>
+          <div>
+            <strong>We noticed this may be a serious situation.</strong>
+            <p>You are not alone. Echo can surface supportive next steps and verified resources.</p>
+            <div>
+              <button type="button" data-toggle-resources>View Support Resources</button>
+              <button type="button" data-scroll-to="#cta">Continue Talking</button>
+            </div>
+            <ul class="resource-list" data-resource-list hidden>
+              <li>Local emergency support and helplines</li>
+              <li>Grounding prompts for the next few minutes</li>
+              <li>Option to keep talking anonymously</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="safety-grid">
+        <article class="reveal"><strong>Crisis Detection</strong><span>Flags concerning language with care.</span></article>
+        <article class="reveal"><strong>Harmful Content Detection</strong><span>Reduces unsafe messages and abuse.</span></article>
+        <article class="reveal"><strong>Misinformation Awareness</strong><span>Guides users toward verified resources.</span></article>
+      </div>
+    </section>
+
+    <section class="privacy section-pad" id="privacy">
+      <div class="section-intro reveal">
+        <span class="section-kicker">Privacy-first architecture</span>
+        <h2>Your identity stays yours.</h2>
+      </div>
+      <div class="privacy-layout">
+        <div class="identity-orbit reveal">
+          <div class="identity-card">
+            <span class="avatar anon large">U</span>
+            <strong>Anonymous User</strong>
+            <small>Alias-based identity</small>
+          </div>
+          <div class="public-card">
+            <h3>Public Identity</h3>
+            <p><span>Alias</span><strong>✓</strong></p>
+            <p><span>Avatar</span><strong>✓</strong></p>
+            <p><span>Real Name</span><strong>×</strong></p>
+            <p><span>Email</span><strong>×</strong></p>
+          </div>
+        </div>
+        <div class="principles">
+          <article class="reveal"><strong>Alias-first identity</strong><span>Users interact through aliases.</span></article>
+          <article class="reveal"><strong>No public real identity</strong><span>Names and emails are not exposed to other users.</span></article>
+          <article class="reveal"><strong>Mutual consent</strong><span>Saved connections require both people to agree.</span></article>
+          <article class="reveal"><strong>Private by default</strong><span>Conversation history is not automatically shared.</span></article>
+        </div>
       </div>
     </section>
 
@@ -166,6 +364,7 @@
         <h2>You do not have to face it alone.</h2>
         <p>Talk to someone. Talk to AI. Find someone who understands.</p>
         
+        <!-- NEW REGISTRATION FORM -->
         <!-- Clean, Functional Action Buttons -->
         <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
           <a href="register.html" class="button" style="background: #fff; color: var(--primary-dark); padding: 14px 28px; border-radius: 12px; font-weight: 800; text-decoration: none;">Create Secure Account</a>
