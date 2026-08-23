@@ -1,30 +1,23 @@
 const express = require("express");
 const cors = require("cors");
+const authRoutes = require("./routes/authRoutes"); // Adjust if your routes file is named differently
 
 const app = express();
 
 // Middleware
-app.use(cors());
-app.use(express.json()); // Parses incoming JSON payloads
+app.use(express.json());
 
-// Basic Health Check Route
-app.get("/health", (req, res) => {
-  res.status(200).json({ success: true, message: "SafeSpeak API is running" });
-});
+// --- THIS IS THE FIX FOR THE NETLIFY ERROR ---
+app.use(cors({
+  origin: [
+    "http://localhost:3000", 
+    "http://localhost:5000", 
+    "https://echo-safespeak.netlify.app" // Allows Netlify to connect!
+  ],
+  credentials: true
+}));
 
-// Route Mount Points
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/chat", require("./routes/chatRoutes"));
-
-// Global 404 handler
-app.use((req, res, next) => {
-  res.status(404).json({ success: false, message: "Endpoint not found" });
-});
-
-// Global Error Handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ success: false, message: "Server Error", error: err.message });
-});
+// Routes
+app.use("/api/auth", authRoutes);
 
 module.exports = app;
