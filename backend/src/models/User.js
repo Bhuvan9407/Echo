@@ -1,52 +1,18 @@
-const mongoose = require('mongoose');
-
-const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  alias: { type: String, required: true },
-  // ADD THIS NEW FIELD:
-  assessment: { type: [String], default: [] },
-  createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('User', userSchema);
+const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Please add a name"],
-    },
-    email: {
-      type: String,
-      required: [true, "Please add an email"],
-      unique: true,
-      lowercase: true,
-    },
-    password: {
-      type: String,
-      required: [true, "Please add a password"],
-      minlength: 6,
-      select: false, // Don't return password by default in queries
-    },
-    alias: {
-      type: String,
-      default: "Anonymous",
-    },
-    preferredLanguage: {
-      type: String,
-      default: "en",
-    },
-    selectedConcerns: {
-      type: [String],
-      default: [],
-    },
-  },
-  { timestamps: true }
-);
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true, select: false },
+  alias: { type: String, default: "Anonymous" },
+  preferredLanguage: { type: String, default: "en" },
+  selectedConcerns: { type: [String], default: [] },
+  assessment: { type: [String], default: [] }, // The 15 question answers
+  createdAt: { type: Date, default: Date.now },
+});
 
-// Pre-save hook to hash password before saving to database
+// Encrypt password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -55,7 +21,7 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Method to compare entered password with hashed password in database
+// Match user entered password to hashed password in database
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
