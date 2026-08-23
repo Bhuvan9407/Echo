@@ -1,61 +1,73 @@
-const API_BASE_URL = "https://echo-ajh5.onrender.com";
-const token = localStorage.getItem("echo_token");
-
-// 1. Security Check
-if (!token) {
-  window.location.href = "index.html";
-}
-
-let currentUser = null;
+// --- UPDATED WITH YOUR REAL RENDER URL ---
+const API_BASE_URL = "https://echo-ajh5.onrender.com/api"; 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const userAliasSpan = document.getElementById("user-alias");
-  const logoutBtn = document.getElementById("logout-btn");
-  const chatContainer = document.getElementById("chat-container");
-  const inputArea = document.getElementById("input-area");
-  const messageInput = document.getElementById("message-input");
-  const targetLanguage = document.getElementById("target-language");
+  const token = localStorage.getItem("echo_token");
+  
+  // If no token is found, kick them back to the login page
+  if (!token) {
+    window.location.href = "index.html";
+    return;
+  }
 
-  // 2. Fetch Logged-in User Profile
+  // 1. Fetch the user's alias to replace "Loading..."
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/me`, {
+    const res = await fetch(`${API_BASE_URL}/auth/me`, {
       method: "GET",
-      headers: { "Authorization": `Bearer ${token}` }
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
     });
-    const data = await response.json();
-    
+
+    const data = await res.json();
     if (data.success) {
-      currentUser = data.data;
-      userAliasSpan.textContent = currentUser.alias;
+      document.getElementById("user-alias").innerText = data.data.alias;
     } else {
+      // Token is invalid or expired
       localStorage.removeItem("echo_token");
       window.location.href = "index.html";
     }
   } catch (error) {
-    console.error("Error fetching profile:", error);
+    document.getElementById("user-alias").innerText = "Error Loading User";
+    console.error("Auth Error:", error);
   }
 
-  // 3. Handle Logout
-  logoutBtn.addEventListener("click", () => {
+  // 2. Handle Logout
+  document.getElementById("logout-btn").addEventListener("click", () => {
     localStorage.removeItem("echo_token");
     window.location.href = "index.html";
   });
 
-  // 4. Send Message to Backend
-  inputArea.addEventListener("submit", async (e) => {
+  // 3. Handle Sending Messages
+  const chatForm = document.getElementById("input-area");
+  const messageInput = document.getElementById("message-input");
+  const chatContainer = document.getElementById("chat-container");
+  const targetLanguage = document.getElementById("target-language");
+
+  chatForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const text = messageInput.value;
-    const lang = targetLanguage.value;
+    const text = messageInput.value.trim();
+    if (!text) return;
 
-    if (!text.trim()) return; // Don't send empty messages
-
-    // Display user's message immediately
-    appendMessage(text, "sent");
+    // Display the user's message in the UI immediately
+    const userBubble = document.createElement("div");
+    userBubble.className = "message sent";
+    userBubble.innerText = text;
+    chatContainer.appendChild(userBubble);
+    
+    // Clear input and scroll down
     messageInput.value = "";
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 
-    // START LOADING ANIMATION
-    showTyping();
+    // Add a typing indicator while waiting for the server
+    const typingIndicator = document.createElement("div");
+    typingIndicator.className = "typing-indicator";
+    typingIndicator.innerHTML = "<span></span><span></span><span></span>";
+    chatContainer.appendChild(typingIndicator);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 
+    // Send the message to the backend
     try {
       const response = await fetch(`${API_BASE_URL}/chat`, {
         method: "POST",
@@ -63,62 +75,38 @@ document.addEventListener("DOMContentLoaded", async () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ 
-          receiverId: currentUser._id, 
-          text: text, 
-          targetLanguage: lang 
+        body: JSON.stringify({
+          text: text,
+          targetLang: targetLanguage.value
         })
       });
 
       const data = await response.json();
-
-      // STOP LOADING ANIMATION
-      removeTyping();
+      
+      // Remove typing indicator
+      chatContainer.removeChild(typingIndicator);
 
       if (data.success) {
-        const aiResponse = `Translated: ${data.data.translatedText}`;
-        appendMessage(aiResponse, "ai-translated", data.data.safetyStatus);
+        // Display the translated response (or AI response)
+        const botBubble = document.createElement("div");
+        botBubble.className = "message ai-translated";
+        botBubble.innerText = data.translatedText || data.reply;
+        chatContainer.appendChild(botBubble);
       } else {
-        appendMessage(`System: ${data.message}`, "ai-translated", "blocked");
+        const errorBubble = document.createElement("div");
+        errorBubble.className = "message ai-translated safety-flag";
+        errorBubble.innerText = "Error: Could not process message.";
+        chatContainer.appendChild(errorBubble);
       }
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
     } catch (error) {
-      removeTyping();
-      appendMessage("System: Failed to reach server.", "ai-translated");
+      chatContainer.removeChild(typingIndicator);
+      const errorBubble = document.createElement("div");
+      errorBubble.className = "message ai-translated safety-flag";
+      errorBubble.innerText = "System: Failed to reach server.";
+      chatContainer.appendChild(errorBubble);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   });
-
-  // --- HELPER FUNCTIONS ---
-
-  function showTyping() {
-    const div = document.createElement("div");
-    div.id = "typing-indicator";
-    div.className = "typing-indicator";
-    // Create the three pulsing dots
-    div.innerHTML = "<span></span><span></span><span></span>";
-    chatContainer.appendChild(div);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-  }
-
-  function removeTyping() {
-    const indicator = document.getElementById("typing-indicator");
-    if (indicator) {
-      indicator.remove();
-    }
-  }
-
-  function appendMessage(text, type, safetyStatus = 'safe') {
-    const msgDiv = document.createElement("div");
-    msgDiv.className = `message ${type}`;
-    msgDiv.textContent = text;
-
-    if (safetyStatus !== 'safe') {
-      const flag = document.createElement("span");
-      flag.className = "safety-flag";
-      flag.textContent = `⚠️ Flagged by Echo Safety: ${safetyStatus}`;
-      msgDiv.appendChild(flag);
-    }
-
-    chatContainer.appendChild(msgDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight; // Auto-scroll to bottom
-  }
 });
