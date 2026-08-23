@@ -1,55 +1,56 @@
-const express = require("express");
-const cors = require("cors");
-const authRoutes = require("./routes/authRoutes"); 
+// Add this near the top of app.js (under the other requires)
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const app = express();
+// Initialize Gemini with your new Environment Variable Key
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-app.use(express.json());
-
-app.use(cors({
-  origin: [
-    "http://localhost:3000", 
-    "http://localhost:5000", 
-    "https://echo-safespeak.netlify.app" 
-  ],
-  credentials: true
-}));
-
-// Authentication Routes
-app.use("/api/auth", authRoutes);
-
-// --- ADD THIS NEW CHAT ROUTE ---
+// --- THE REAL CHAT ROUTE ---
 app.post("/api/chat", async (req, res) => {
   const { text, targetLang } = req.body;
   
-  // 1. Simple Crisis Detection (You can expand this list!)
-  const crisisKeywords = ["kill myself", "end it", "can't take this anymore", "want to die", "suicide", "hurt myself"];
-  
-  const isCrisis = crisisKeywords.some(keyword => text.toLowerCase().includes(keyword));
-
-  if (isCrisis) {
-    // If a crisis is detected, immediately send the safety flag response
-    return res.status(200).json({
-      success: true,
-      isFlagged: true,
-      reply: "We noticed this may be a serious situation. You are not alone. Please consider reaching out to a local helpline or emergency support."
-    });
-  }
-
-  // 2. Normal Chat Response (If no crisis is detected)
   try {
-    // --- THIS IS WHERE YOUR GEMINI API CALL GOES ---
-    // (Assuming you already have this code working since the chat works!)
+    // 1. Tell Gemini to use the fast, free-tier friendly model
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    // 2. Give Gemini strict instructions
+    const prompt = `
+      You are the core intelligence of Echo, an anonymous peer-support app.
+      A user has sent this message: "${text}"
+      
+      Task 1: Determine if this message is a severe mental health crisis (e.g., suicide, self-harm, extreme danger).
+      Task 2: Translate the message accurately into the language code: ${targetLang}. Keep the original tone.
+
+      Return ONLY a JSON object in this exact format, with no markdown formatting or extra words:
+      {
+        "isCrisis": true or false,
+        "translation": "your translated text here"
+      }
+    `;
+
+    // 3. Send to Google!
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text();
     
+    // Parse the JSON Gemini gave us
+    const aiData = JSON.parse(responseText.replace(/```json/g, '').replace(/```/g, ''));
+
+    // 4. Send the result back to your frontend!
+    if (aiData.isCrisis) {
+      return res.status(200).json({
+        success: true,
+        isFlagged: true,
+        reply: "We noticed this may be a serious situation. You are not alone. Please consider reaching out to a local helpline or emergency support."
+      });
+    }
+
     res.status(200).json({
       success: true,
       isFlagged: false,
-      reply: `Echo AI: I understand you are saying "${text}". I am here to listen.` // Replace with actual Gemini reply variable
+      reply: aiData.translation
     });
 
   } catch (error) {
+    console.error("Gemini API Error:", error);
     res.status(500).json({ success: false, message: "AI generation failed" });
   }
 });
-
-module.exports = app;
