@@ -19,15 +19,37 @@ app.use(cors({
 app.use("/api/auth", authRoutes);
 
 // --- ADD THIS NEW CHAT ROUTE ---
-app.post("/api/chat", (req, res) => {
+app.post("/api/chat", async (req, res) => {
   const { text, targetLang } = req.body;
   
-  // For now, let's just make the server echo the message back so we know it works!
-  // Later, we will connect this to an AI or a real human using WebSockets.
-  res.status(200).json({
-    success: true,
-    reply: `Echo AI: I received your message "${text}". (Translation to ${targetLang} coming soon!)`
-  });
+  // 1. Simple Crisis Detection (You can expand this list!)
+  const crisisKeywords = ["kill myself", "end it", "can't take this anymore", "want to die", "suicide", "hurt myself"];
+  
+  const isCrisis = crisisKeywords.some(keyword => text.toLowerCase().includes(keyword));
+
+  if (isCrisis) {
+    // If a crisis is detected, immediately send the safety flag response
+    return res.status(200).json({
+      success: true,
+      isFlagged: true,
+      reply: "We noticed this may be a serious situation. You are not alone. Please consider reaching out to a local helpline or emergency support."
+    });
+  }
+
+  // 2. Normal Chat Response (If no crisis is detected)
+  try {
+    // --- THIS IS WHERE YOUR GEMINI API CALL GOES ---
+    // (Assuming you already have this code working since the chat works!)
+    
+    res.status(200).json({
+      success: true,
+      isFlagged: false,
+      reply: `Echo AI: I understand you are saying "${text}". I am here to listen.` // Replace with actual Gemini reply variable
+    });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: "AI generation failed" });
+  }
 });
 
 module.exports = app;

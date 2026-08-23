@@ -87,16 +87,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       chatContainer.removeChild(typingIndicator);
 
       if (data.success) {
-        // Display the translated response (or AI response)
         const botBubble = document.createElement("div");
-        botBubble.className = "message ai-translated";
-        botBubble.innerText = data.translatedText || data.reply;
+        
+        // Check if the backend flagged this message for safety
+        if (data.isFlagged) {
+          botBubble.className = "message ai-translated safety-flag"; // Turns it red!
+          botBubble.innerHTML = `<strong>⚠️ Safety Notice</strong><br>${data.reply}`;
+        } else {
+          botBubble.className = "message ai-translated"; // Normal white bubble
+          botBubble.innerText = data.reply;
+        }
+        
         chatContainer.appendChild(botBubble);
-      } else {
-        const errorBubble = document.createElement("div");
-        errorBubble.className = "message ai-translated safety-flag";
-        errorBubble.innerText = "Error: Could not process message.";
-        chatContainer.appendChild(errorBubble);
       }
       chatContainer.scrollTop = chatContainer.scrollHeight;
 
